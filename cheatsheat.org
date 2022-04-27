@@ -1,0 +1,13 @@
+* Cheat sheet 
+** Bookmarks
+*** C-x r m set bookmark 
+*** C-x r l list bookmarks
+*** M-x bookmark-delete
+** Code Navigation
+*** C-q expand region
+*** C-M-<mouse-1> add cursor 
+*** C-f find file in project
+*** C-a ag root 
+*** C-c C-c eslint fix all
+** Git
+*** C-x g status 
