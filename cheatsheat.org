@@ -9,6 +9,7 @@
 *** C-f find file in project
 *** C-a ag root 
 *** C-c C-c eslint fix all
+*** C-n sidebar
 ** Git
 *** C-x g status 
 ** emacs 

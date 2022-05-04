@@ -81,6 +81,9 @@
 
 																				; ================= GLOBAL EDITOR  ================
   
+(global-set-key (kbd "C-n") 'treemacs)
+
+
 (setq custom-tab-width 1)
 ;; Two callable functions for enabling/disabling tabs in Emacs
 (defun disable-tabs () (setq indent-tabs-mode nil))
