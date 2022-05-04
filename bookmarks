@@ -2,7 +2,12 @@
 ;;; This format is meant to be slightly human-readable;
 ;;; nevertheless, you probably don't want to edit it.
 ;;; -*- End Of Bookmark File Format Version Stamp -*-
-(("settings.xml"
+(("y"
+ (filename . "~/.emacs.d/init.el")
+ (front-context-string . "\n(require 'packa")
+ (rear-context-string . "===============\n")
+ (position . 62))
+("settings.xml"
  (filename . "~/.m2/settings.xml")
  (front-context-string . "-J-Dpasw-testing")
  (rear-context-string . "ommands-from-m2>")

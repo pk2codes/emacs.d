@@ -7,10 +7,11 @@
 		     flycheck
 		     helm
 		     helm-lsp
+		     lsp-eslint
 		     dap-mode
 		     yasnippet
 		     use-package
-         lsp-treemacs
+		     lsp-treemacs
 		     ))
 
 ; list the repositories containing them
@@ -36,12 +37,15 @@
   (exec-path-from-shell-initialize))
 
 (delete-selection-mode t)
-(setq gc-cons-threshold 100000000)
-(setq read-process-output-max (* 1024 1024)) ;; 1mb
-(setq auto-save-default nil)
-(setq make-backup-files nil)
-(setq create-lockfiles nil)
-(global-display-line-numbers-mode)
+(setq gc-cons-threshold (* 100 1024 1024)
+      read-process-output-max (* 1024 1024)
+      treemacs-space-between-root-nodes nil
+      company-minimum-prefix-length 1
+      lsp-lens-enable t
+      lsp-signature-auto-activate nil
+      ; lsp-enable-indentation nil ; uncomment to use cider indentation instead of lsp
+      ; lsp-enable-completion-at-point nil ; uncomment to use cider completion instead of lsp
+      )
 
                                         ; ================= Emacs Boot  ================
 (use-package dashboard
@@ -49,14 +53,21 @@
   :config
   (dashboard-setup-startup-hook)
 	(setq dashboard-banner-logo-title "Happy Hacking!")
-	(setq dashboard-items '((recents  . 5)
-													(projects . 10)
-													(bookmarks . 10))))
+	(setq dashboard-items '((recents  . 5)										   (projects . 10)
+				 (bookmarks . 10))))
 
 
 (setq inhibit-startup-message t)
 
 																				; ================= UI  ================
+
+
+																				; https://www.jetbrains.com/lp/mono/
+																				; https://linuxconfig.org/how-to-install-and-manage-fonts-on-linux
+(add-to-list 'default-frame-alist '(font . "JetBrains Mono"))
+(add-to-list 'default-frame-alist '(line-spacing . 0.1))
+(set-face-attribute 'default nil :height 100)
+
 (use-package dracula-theme
   :ensure t
   :config (load-theme 'dracula t))
@@ -69,8 +80,15 @@
 
 
 																				; ================= GLOBAL EDITOR  ================
+  
+(setq custom-tab-width 1)
+;; Two callable functions for enabling/disabling tabs in Emacs
+(defun disable-tabs () (setq indent-tabs-mode nil))
+(defun enable-tabs  ()
+  (local-set-key (kbd "TAB") 'tab-to-tab-stop)
+  ;(setq indent-tabs-mode t)
+  (setq tab-width custom-tab-width))
 
-(setq-default tab-width 2) ; emacs 23.1 to 26 default to 8
 (global-set-key (kbd "C-/") 'comment-or-uncomment-region)
 
 ;; get keybinding of function: C-h w <function name>
@@ -108,6 +126,21 @@
   :config (global-company-mode t))
 
 																				; ================= CODING  ================
+;; ClOJURE
+(use-package cider
+  :ensure t
+  :pin melpa-stable)
+
+(add-hook 'clojure-mode-hook 'lsp)
+(add-hook 'clojurescript-mode-hook 'lsp)
+(add-hook 'clojurec-mode-hook 'lsp)
+
+;; WEB
+(use-package jest-test-mode 
+  :ensure t 
+  :commands jest-test-mode
+  :hook (lsp-mode js-mode typescript-tsx-mode))
+
 (use-package projectile
 	:ensure t
 	:config (projectile-mode +1))
@@ -117,6 +150,7 @@
 (global-set-key (kbd "C-f") 'project-find-file)
 (global-set-key (kbd "C-a") 'helm-ag-project-root)
 (global-set-key (kbd "C-c C-c") 'lsp-eslint-fix-all)
+(global-set-key (kbd "M-RET") 'helm-lsp-code-actions)
 
 ;; magit
 (use-package magit
@@ -136,7 +170,12 @@
 	 ("\\.html\\'" . web-mode))
   :commands web-mode)
 
-
+(setq electric-indent-mode -1)
+(setq electric-indent-inhibit t)
+(setq-default tab-width 1)
+(setq-default indent-tabs-mode nil)
+(setq-default c-basic-offset 2)
+(when (fboundp 'electric-indent-mode) (electric-indent-mode -1))
 ;; lsp-mode
 (setq lsp-log-io nil) ;; Don't log everything = speed
 (setq lsp-keymap-prefix "C-c l")
@@ -149,11 +188,17 @@
   :ensure t
   :config
   (setq lsp-eslint-auto-fix-on-save t)
-  (setq lsp-eslint-enable t)
-  :hook ((web-mode . lsp-deferred)
-         (lsp-mode . lsp-enable-which-key-integration)
-         (lsp-mode . lsp-eslint))
-  :commands lsp-deferred)
+
+;  (setq lsp-eslint-enable t)
+	(setq lsp-enable-on-type-formatting nil)
+	(setq lsp-enable-indentation nil)
+	(setq lsp-typescript-format-enable nil)
+; (setq indent-tabs-mode t)
+	:hook ((web-mode . lsp-deferred)
+	       (lsp-mode . lsp-enable-which-key-integration)
+	       (lsp-mode . lsp-eslint)
+        (lsp-mode . show-paren-mode))
+	:commands lsp-deferred)
 
 (use-package lsp-ui
   :ensure t
@@ -165,8 +210,8 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-	 (quote
-		(projectile helm-ag dap-firefox yasnippet which-key web-mode use-package tide multiple-cursors magit lsp-ui json-mode helm-lsp expand-region exec-path-from-shell dracula-theme dap-mode company))))
+   (quote
+    (cider jest-test-mode projectile helm-ag dap-firefox yasnippet which-key web-mode use-package tide multiple-cursors magit lsp-ui json-mode helm-lsp expand-region exec-path-from-shell dracula-theme dap-mode company))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
