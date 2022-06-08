@@ -81,6 +81,18 @@
 
 																				; ================= GLOBAL EDITOR  ================
   
+(set-default 'cursor-type 'bar)
+
+;; scroll one line at a time (less "jumpy" than defaults)
+
+(setq mouse-wheel-scroll-amount '(1 ((shift) . 1))) ;; one line at a time
+
+(setq mouse-wheel-progressive-speed nil) ;; don't accelerate scrolling
+
+(setq mouse-wheel-follow-mouse 't) ;; scroll window under mouse
+
+(setq scroll-step 1) ;; keyboard scroll one line at a time
+
 (global-set-key (kbd "C-n") 'treemacs)
 
 
@@ -129,6 +141,17 @@
   :config (global-company-mode t))
 
 																				; ================= CODING  ================
+;; CL 
+;; sbcl --eval '(ql:quickload :quicklisp-slime-helper)' --quit
+(load (expand-file-name "~/.quicklisp/slime-helper.el"))
+(setq inferior-lisp-program "sbcl")
+(add-to-list 'slime-contribs 'slime-repl)
+(add-to-list 'auto-mode-alist '("\\.cl\\'" . common-lisp-mode))
+(autoload 'enable-paredit-mode "paredit" "Turn on pseudo-structural editing of Lisp code." t)
+(add-hook 'emacs-lisp-mode-hook       #'enable-paredit-mode)
+(add-hook 'lisp-mode-hook             #'enable-paredit-mode)
+(add-hook 'common-lisp-mode-hook             #'enable-paredit-mode)
+
 ;; ClOJURE
 (use-package cider
   :ensure t
@@ -214,7 +237,7 @@
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (cider jest-test-mode projectile helm-ag dap-firefox yasnippet which-key web-mode use-package tide multiple-cursors magit lsp-ui json-mode helm-lsp expand-region exec-path-from-shell dracula-theme dap-mode company))))
+    (paredit slime cider jest-test-mode projectile helm-ag dap-firefox yasnippet which-key web-mode use-package tide multiple-cursors magit lsp-ui json-mode helm-lsp expand-region exec-path-from-shell dracula-theme dap-mode company))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

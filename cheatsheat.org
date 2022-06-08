@@ -13,5 +13,6 @@
 ** Git
 *** C-x g status 
 ** emacs 
-*** M-x customize-variable RET check variable 
-*** C-h k describe key (for keybinding)
+*** M-x customize-variable ; RET check variable 
+*** C-h k describe key ; (for keybinding)
+*** M-x describe-variable 
