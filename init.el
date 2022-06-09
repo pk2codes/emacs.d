@@ -95,6 +95,7 @@
 
 (global-set-key (kbd "C-n") 'treemacs)
 
+(require 'rainbow-delimiters)
 
 (setq custom-tab-width 1)
 ;; Two callable functions for enabling/disabling tabs in Emacs
@@ -151,6 +152,40 @@
 (add-hook 'emacs-lisp-mode-hook       #'enable-paredit-mode)
 (add-hook 'lisp-mode-hook             #'enable-paredit-mode)
 (add-hook 'common-lisp-mode-hook             #'enable-paredit-mode)
+(add-hook 'common-lisp-mode-hook             #'rainbow-delimiters-mode-enable)
+
+(defvar slime-repl-font-lock-keywords lisp-font-lock-keywords-2)
+(defun slime-repl-font-lock-setup ()
+  (setq font-lock-defaults
+        '(slime-repl-font-lock-keywords
+         ;; From lisp-mode.el
+         nil nil (("+-*/.<>=!?$%_&~^:@" . "w")) nil
+         (font-lock-syntactic-face-function
+         . lisp-font-lock-syntactic-face-function))))
+
+(defadvice slime-repl-insert-prompt (after font-lock-face activate)
+  (let ((inhibit-read-only t))
+    (add-text-properties
+     slime-repl-prompt-start-mark (point)
+     '(font-lock-face
+      slime-repl-prompt-face
+      rear-nonsticky
+      (slime-repl-prompt read-only font-lock-face intangible)))))
+
+(defun slime-describe-symbol-keys ()
+  (local-set-key (kbd "C-?") 'slime-describe-symbol))
+
+(add-hook 'slime-mode-hook #'slime-describe-symqbol-keys)
+(add-hook 'slime-mode-hook #'rainbow-delimiters-mode)
+
+(add-hook 'slime-repl-mode-hook #'slime-repl-font-lock-setup)
+(add-hook 'slime-repl-mode-hook #'enable-paredit-mode)
+(add-hook 'slime-repl-mode-hook #'rainbow-delimiters-mode-enable)
+(add-hook 'slime-repl-mode-hook #'slime-describe-symbol-keys)
+(add-hook 'slime-repl-mode-hook #'rainbow-delimiters-mode)
+
+(slime-setup '(slime-fancy slime-quicklisp slime-asdf slime-company))
+
 
 ;; ClOJURE
 (use-package cider
@@ -237,7 +272,7 @@
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (paredit slime cider jest-test-mode projectile helm-ag dap-firefox yasnippet which-key web-mode use-package tide multiple-cursors magit lsp-ui json-mode helm-lsp expand-region exec-path-from-shell dracula-theme dap-mode company))))
+    (slime-company ac-slime auto-complete paredit slime cider jest-test-mode projectile helm-ag dap-firefox yasnippet which-key web-mode use-package tide multiple-cursors magit lsp-ui json-mode helm-lsp expand-region exec-path-from-shell dracula-theme dap-mode company))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
