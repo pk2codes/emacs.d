@@ -53,7 +53,7 @@
                      rainbow-delimiters
                      cider
                      dashboard
-                     dracula-theme
+                     jetbrains-darcula-theme
                      expand-region
                      treemacs
                      lsp-mode
@@ -103,14 +103,14 @@
 (if (find-font (font-spec :name "JetBrains Mono"))
     (progn
       (add-to-list 'default-frame-alist '(font . "JetBrains Mono"))
-      (set-face-attribute 'default nil :height 100))
+      (set-face-attribute 'default nil :height 130))
   (message "WARNING: Font 'JetBrains Mono' not found."))
 
 (add-to-list 'default-frame-alist '(line-spacing . 0.1))
 
-(use-package dracula-theme
+(use-package jetbrains-darcula-theme
   :ensure t
-  :config (load-theme 'dracula t))
+  :config (load-theme 'jetbrains-darcula t))
 
 (when window-system
   (tool-bar-mode -1))
@@ -298,7 +298,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(slime-company paredit slime cider jest-test-mode projectile helm-rg yasnippet which-key web-mode use-package tide multiple-cursors magit lsp-ui json-mode helm-lsp expand-region exec-path-from-shell dracula-theme dap-mode company rainbow-delimiters dashboard treemacs lsp-mode lsp-treemacs)))
+   '(slime-company paredit slime cider jest-test-mode projectile helm-rg yasnippet which-key web-mode use-package tide multiple-cursors magit lsp-ui json-mode helm-lsp expand-region exec-path-from-shell jetbrains-dracula-theme dap-mode company rainbow-delimiters dashboard treemacs lsp-mode lsp-treemacs)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
