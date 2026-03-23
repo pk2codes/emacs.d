@@ -1,4 +1,5 @@
 
+
 					; ================= PACKAGE MANAGEMENT ================
 
 (require 'package)
@@ -23,7 +24,9 @@
 ;; *Warnings* Buffer nicht automatisch anzeigen
 
 ;; Auto-install alle benötigten Pakete
-(setq package-list '(multiple-cursors
+(setq package-list '(
+                     powershell
+                     multiple-cursors
                      tide
                      flycheck
                      helm
@@ -42,7 +45,6 @@
                      expand-region
                      treemacs
                      lsp-mode
-
                      lsp-ui
                      company
                      magit
@@ -52,7 +54,7 @@
                      which-key
                      exec-path-from-shell
                      helm-rg
-                     jest-test-mode))
+		     jest-test-mode))
 
 ;; <-- DAS fehlte: tatsächliche Installationsschleife
 (dolist (package package-list)
@@ -209,6 +211,11 @@
 (add-hook 'clojure-mode-hook       'lsp)
 (add-hook 'clojurescript-mode-hook 'lsp)
 (add-hook 'clojurec-mode-hook      'lsp)
+;; WINDOWS
+(use-package powershell
+  :ensure t)
+
+
 
 ;; WEB
 (use-package jest-test-mode
