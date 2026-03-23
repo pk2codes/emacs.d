@@ -47,3 +47,7 @@ flycheck_*.el
 
 # directory configuration
 .dir-locals.el
+
+.cache
+.lsp-session-v1
+eln-cache

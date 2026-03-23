@@ -1,6 +1,15 @@
 
+;; Native Compilation Warnings stumm schalten
+(when (featurep 'native-compile)
+  (setq native-comp-async-report-warnings-errors 'silent)
+  (setq native-comp-deferred-compilation t)
+  (setq native-compile-prune-cache t))
+
+
 
 					; ================= PACKAGE MANAGEMENT ================
+
+
 
 (require 'package)
 
@@ -14,11 +23,14 @@
 (unless package-archive-contents
   (package-refresh-contents))
 
-;; Native Compilation Warnings stumm schalten
+
+;; ================= NATIVE COMPILATION ==============
+(setq inhibit-automatic-native-compilation t)
 (when (featurep 'native-compile)
   (setq native-comp-async-report-warnings-errors 'silent)
-  (setq native-comp-deferred-compilation t)
-  (setq native-compile-prune-cache t))
+  (setq native-comp-jit-compilation nil))
+
+
 
 (setq warning-minimum-level :error)
 ;; *Warnings* Buffer nicht automatisch anzeigen
