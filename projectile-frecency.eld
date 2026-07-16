@@ -1,0 +1,1 @@
+(("/home/animus/.emacs.d/" ("bookmarks" 1 1784186912) ("init.el" 7 1784187488)))

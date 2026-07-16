@@ -66,7 +66,8 @@
                      which-key
                      exec-path-from-shell
                      helm-rg
-		     jest-test-mode))
+                     gruvbox-theme 
+		                 jest-test-mode))
 
 ;; <-- DAS fehlte: tatsächliche Installationsschleife
 (dolist (package package-list)
@@ -93,12 +94,27 @@
   :config
   (dashboard-setup-startup-hook)
   (setq dashboard-banner-logo-title "Happy Hacking!")
+  (setq dashboard-startup-banner "~/.emacs.d/start.png")
   (setq dashboard-items '((recents   . 5)
                           (projects  . 10)
                           (bookmarks . 10))))
-
+(setq dashboard-image-banner-max-width 600)
+(setq dashboard-image-banner-max-height 400)
 (setq inhibit-startup-message t)
+(defvar my/dashboard-titles
+  '("The patch is temporary. The vuln is eternal."
+    "Sleep is a syscall we rarely invoke."
+    "The kernel doesn't care about your feelings."
+    "Detection is a skill issue on both sides."
+    "We didn't bypass your defenses. We used the front door."
+    "Every SYSTEM shell is someone's unreviewed pull request."
+    "Antivirus is just a list of yesterday's mistakes."
+    "Malware is software. Software has bugs. We ship anyway."
+    "Your EDR has great telemetry on everything except what matters."))
 
+(setq dashboard-banner-logo-title
+      (nth (random (length my/dashboard-titles))
+           my/dashboard-titles))
 ; ================= UI ================
 (if (find-font (font-spec :name "JetBrains Mono"))
     (progn
@@ -108,9 +124,9 @@
 
 (add-to-list 'default-frame-alist '(line-spacing . 0.1))
 
-(use-package jetbrains-darcula-theme
+(use-package gruvbox-theme
   :ensure t
-  :config (load-theme 'jetbrains-darcula t))
+  :config (load-theme 'gruvbox-dark-hard t))
 
 (when window-system
   (tool-bar-mode -1))
